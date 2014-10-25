@@ -222,6 +222,10 @@ public class NetBankServer {
 					}
 					break;
 				}
+				case 4: {
+					listener.serverAccountData(acc);
+					break;
+				}
 				default: {
 					System.out.println("Server : Stopping");
 					clientWaiting = false;
@@ -242,6 +246,8 @@ public class NetBankServer {
 			return 2;
 		else if(protocol.equals(NetBankClientProtocols.clientAlterCredentials))
 			return 3;
+		else if(protocol.equals(NetBankClientProtocols.clientViewAccount))
+			return 4;
 
 
 		return -1;
@@ -271,6 +277,7 @@ public class NetBankServer {
 		void serverSendTransactionData(NetBankTransactionData datas[]);
 		void serverAccountAdded(NetBankAccountData acc);
 		void serverPasswordChanged();
+		void serverAccountData(NetBankAccountData data);
 	}
 
 	public static boolean isExecutorAvailable() {

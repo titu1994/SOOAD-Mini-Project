@@ -226,6 +226,10 @@ public class NetBankClient implements ServerListener{
 			e.printStackTrace();
 		}
 	}
+	
+	public void viewAccountDetails() {
+		pr.println(NetBankClientProtocols.clientViewAccount);
+	}
 
 
 	public interface NetBankClientProtocols {
@@ -235,6 +239,7 @@ public class NetBankClient implements ServerListener{
 		String clientAlterCredentials = "clientAlterCredentials";
 		String clientAddTransaction = "clientAddTransaction";
 		String clientViewAllTransactions = "clientViewAllTransactions";
+		String clientViewAccount = "clientViewAccount";
 	}
 
 	public interface ClientListener {
@@ -250,6 +255,8 @@ public class NetBankClient implements ServerListener{
 		void clientNewPasswordEmpty();
 		void clientOldPasswordNotFound();
 		void clientPasswordChanged();
+		
+		void clientAccountData(NetBankAccountData data);
 	}
 
 
@@ -295,6 +302,11 @@ public class NetBankClient implements ServerListener{
 	@Override
 	public void serverPasswordChanged() {
 		listener.clientPasswordChanged();
+	}
+
+	@Override
+	public void serverAccountData(NetBankAccountData data) {
+		listener.clientAccountData(data);
 	}
 
 }

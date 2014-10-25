@@ -68,7 +68,7 @@ public class ClientUI extends JFrame {
 
 		@Override
 		public void clientTransactionAdded(boolean succesful) {
-			
+			waitDialog.setVisible(false);
 		}
 
 		@Override
@@ -99,6 +99,11 @@ public class ClientUI extends JFrame {
 		@Override
 		public void clientPasswordChanged() {
 			trans.clientPasswordChanged();
+		}
+
+		@Override
+		public void clientAccountData(NetBankAccountData data) {
+			trans.clientAccountData(data);
 		}
 		
 	}

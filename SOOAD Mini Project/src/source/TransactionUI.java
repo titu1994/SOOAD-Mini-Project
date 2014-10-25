@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.AbstractTableModel;
+import javax.xml.soap.Text;
 
 public class TransactionUI extends JFrame {
 	
@@ -22,10 +23,10 @@ public class TransactionUI extends JFrame {
 	private TransactionDataModel tmodel;
 	
 	private JTable table;
-	private JButton transAddButton, viewTransButton, alterAccPassButton, submitAdd, accountEdit;
+	private JButton transAddButton, viewTransButton, alterAccPassButton, viewAccountDataButton, submitAdd, accountEdit;
 	private JTextField transIDText,  transToText, transAmtText;
 	private JPasswordField accountOldText, accountNewText, accountNewCheckText;
-	private JLabel transIDLabel, transToLabel, transAmtLabel, accountOldLabel, accountNewLabel, accountNewCheckLabel;
+	private JLabel transIDLabel, transToLabel, transAmtLabel, accountOldLabel, accountNewLabel, accountNewCheckLabel, accountIDLabel, accountMaxLabel, accountCreditLabel, accountIDValLabel, accountMaxValLabel, accountCreditValLabel;
 
 	public TransactionUI() {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -41,7 +42,9 @@ public class TransactionUI extends JFrame {
 		transAddButton = new JButton();
 		viewTransButton = new JButton();
 		alterAccPassButton = new JButton();
+		viewAccountDataButton = new JButton();
 		submitAdd = new JButton();
+		accountEdit = new JButton();
 		
 		transIDText = new JTextField();	
 		transToText = new JTextField();
@@ -50,13 +53,19 @@ public class TransactionUI extends JFrame {
 		transToLabel = new JLabel();
 		transAmtLabel = new JLabel();
 		
-		accountEdit = new JButton();
 		accountOldLabel = new JLabel();
 		accountNewLabel = new JLabel();
 		accountNewCheckLabel = new JLabel();
 		accountOldText = new JPasswordField();
 		accountNewText = new JPasswordField();
 		accountNewCheckText = new JPasswordField();
+		
+		accountIDLabel = new JLabel();
+		accountMaxLabel = new JLabel();
+		accountCreditLabel = new JLabel();
+		accountIDValLabel = new JLabel();
+		accountMaxValLabel = new JLabel();
+		accountCreditValLabel = new JLabel();
 		
 		transAddButton.setText("Add Transaction");
 		transAddButton.setBounds(100, 0, 200, 50);
@@ -124,6 +133,19 @@ public class TransactionUI extends JFrame {
 			}
 		});
 		
+		viewAccountDataButton.setText("View Account Data");
+		viewAccountDataButton.setBounds(850, 0, 200, 50);
+		viewAccountDataButton.setVisible(true);
+		viewAccountDataButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ClientUI.waitDialog.setVisible(true);
+				ClientUI.client.viewAccountDetails();
+			}
+		});
+		getContentPane().add(viewAccountDataButton);
+		
 		transIDLabel.setBounds(0, 100, 100, 50);
 		transIDLabel.setText("TransactionID");
 		transToLabel.setBounds(125, 100, 100, 50);
@@ -145,6 +167,16 @@ public class TransactionUI extends JFrame {
 		accountOldText.setBounds(350, 100, 100, 50);
 		accountNewText.setBounds(350, 200, 100, 50);
 		accountNewCheckText.setBounds(350, 300, 100, 50);
+		
+		accountIDLabel.setBounds(100, 100, 200, 50);
+		accountIDLabel.setText("Account ID");
+		accountMaxLabel.setBounds(100, 200, 200, 50);
+		accountMaxLabel.setText("Max Credit");
+		accountCreditLabel.setBounds(100, 300, 200, 50);
+		accountCreditLabel.setText("Credit Limit");
+		accountIDValLabel.setBounds(350, 100, 200, 50);
+		accountMaxValLabel.setBounds(350, 200, 200, 50);
+		accountCreditValLabel.setBounds(350, 300, 200, 50);
 		
 	}
 
@@ -224,6 +256,13 @@ public class TransactionUI extends JFrame {
 		accountOldText.setVisible(false);
 		accountNewText.setVisible(false);
 		accountNewCheckText.setVisible(false);
+		
+		accountIDLabel.setVisible(false);
+		accountMaxLabel.setVisible(false);
+		accountCreditLabel.setVisible(false);
+		accountIDValLabel.setVisible(false);
+		accountMaxValLabel.setVisible(false);
+		accountCreditValLabel.setVisible(false);
 	}
 
 	private void tableSetup() {		
@@ -302,6 +341,33 @@ public class TransactionUI extends JFrame {
 	public void clientPasswordChanged() {
 		ClientUI.waitDialog.setVisible(false);
 		JOptionPane.showMessageDialog(this, "Password was succesfully changed.");
+	}
+	
+	boolean accountDataFirst = true;
+	public void clientAccountData(NetBankAccountData data) {
+		clearScreen();
+		
+		if(accountDataFirst) {
+			getContentPane().add(accountIDLabel);
+			getContentPane().add(accountMaxLabel);
+			getContentPane().add(accountCreditLabel);
+			getContentPane().add(accountIDValLabel);
+			getContentPane().add(accountMaxValLabel);
+			getContentPane().add(accountCreditValLabel);
+			accountDataFirst = false;
+		}
+		
+		accountIDLabel.setVisible(true);
+		accountMaxLabel.setVisible(true);
+		accountCreditLabel.setVisible(true);
+		accountIDValLabel.setVisible(true);
+		accountMaxValLabel.setVisible(true);
+		accountCreditValLabel.setVisible(true);
+		
+		accountIDValLabel.setText(data.getAccountID()+"");
+		accountMaxValLabel.setText(data.getCreditMaxLimit()+"");
+		accountCreditValLabel.setText(data.getCreditConsumed()+"");
+		ClientUI.waitDialog.setVisible(false);
 	}
 	
 	private class DisplayTransaction {

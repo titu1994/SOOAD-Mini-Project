@@ -287,6 +287,9 @@ public class TransactionUI extends JFrame {
 		ClientUI.waitDialog.setVisible(false);
 	}
 	
+	/*
+	 * Duplicated Functions from the ClientUI class for clear distinction of data flow and operation on data.
+	 */
 	public void clientTransactionAdded(boolean succesful) {
 		ClientUI.waitDialog.setVisible(false);
 		if(succesful) {

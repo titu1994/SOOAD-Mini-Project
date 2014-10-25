@@ -12,6 +12,7 @@ public class ClientUI extends JFrame {
 	
 	private static LogIn login;
 	private static TransactionUI trans;
+	private static AdminUI admin;
 	
 	private static long id;
 	private static String password;
@@ -51,6 +52,12 @@ public class ClientUI extends JFrame {
 		login.setVisible(false);
 		trans = new TransactionUI();
 		trans.setVisible(true);
+	}
+	
+	public static void AdminScreen() {
+		login.setVisible(false);
+		admin = new AdminUI();
+		admin.setVisible(true);
 	}
 	
 

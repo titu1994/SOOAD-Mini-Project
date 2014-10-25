@@ -8,16 +8,22 @@ public class NetBankAccountData {
 	private String securePassword;
 	private double creditMaxLimit;
 	private double creditConsumed;
+	private boolean isAdmin;
 
 	public NetBankAccountData(long accountID, String securePassword) {
-		this(accountID, securePassword, 10000, 0);
+		this(accountID, securePassword, 10000, 0, false);
 	}
 	
-	public NetBankAccountData(long accountID, String securePassword, double creditMax, double creditConsumed) {
+	public NetBankAccountData(long accountID, String securePassword, boolean isAdmin) {
+		this(accountID, securePassword, 10000, 0, isAdmin);
+	}
+	
+	public NetBankAccountData(long accountID, String securePassword, double creditMax, double creditConsumed, boolean isAdmin) {
 		this.accountID = accountID;
 		this.securePassword = securePassword;
 		this.creditMaxLimit = creditMax;
 		this.creditConsumed = creditConsumed;
+		this.isAdmin = isAdmin;
 	}
 	
 	public long getAccountID() {
@@ -36,6 +42,10 @@ public class NetBankAccountData {
 		return creditMaxLimit;
 	}
 
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
 	public void setCreditMaxLimit(double creditMaxLimit) {
 		this.creditMaxLimit = creditMaxLimit;
 	}
@@ -43,7 +53,7 @@ public class NetBankAccountData {
 	public double getCreditConsumed() {
 		return creditConsumed;
 	}
-
+	
 	public void setCreditConsumed(double creditConsumed) {
 		this.creditConsumed = creditConsumed;
 	}

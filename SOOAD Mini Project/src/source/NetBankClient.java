@@ -20,6 +20,7 @@ public class NetBankClient implements ServerListener{
 
 	private String password;
 	private long accountID;
+	private boolean isAdmin;
 
 	private double creditLimit, creditConsumed; 
 	private PrintWriter pr;
@@ -82,21 +83,9 @@ public class NetBankClient implements ServerListener{
 					getSecureCredentials(client, data);
 				}
 
-				//handleUserChoice(client, pr, bb);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-
-				/*try {
-					if(client != null)
-						client.close();
-
-					System.out.println("Client : Closed");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
 			}
 
 		}
@@ -116,9 +105,6 @@ public class NetBankClient implements ServerListener{
 			String arr[] = data.split(",");
 			if(NetBankServerProtocols.serverError.equals(arr[0])) {
 				if(NetBankServerProtocols.errorIdDoesNotExist.equals(arr[1])) {
-					//TODO: Handle client if Account does not exist
-					//For now immediately create a new account:
-
 					listener.clientLogInFailed();
 				}
 			}
@@ -131,11 +117,34 @@ public class NetBankClient implements ServerListener{
 		}
 	}
 
-	public void createNewAccount(long accountID, String password) {
+	/**
+	 * Note: Syntax about how to call the Server functions.
+	 * TO implement a new function :
+	 * 1) Create a new string in the ClientProtocols interface with appropriate name
+	 * 2) Create a function with similar name in this class
+	 * 3) First statement must be : pr.println(NetBankClientProtocols.NEW_STRING_PROTOCOL);
+	 * 4) Send as many inputs you want in string format using pr.println() in this class. Recieve in same order as String in Server using bb.readLine() in Server;
+	 * 5) Recieve as many inputs you want in String format using bb.readLine() in this class. Send in same order as String from Server using pr.println() in Server.
+	 * 
+	 * Note : Try not to recieve output results here. Instead, only send protocol and inputs and exit this function. 
+	 * 		  To get the results, create a new function prepended with "server" in ServerListener and override in this class.
+	 * 		  To send data from the Server to Client, use the Server's "listener" object
+	 * 		  To send data from the Client to ClientUI, use the Client's "listener" object
+	 * 
+	 * Also, create new corresponding functions in ClientListener prepended with "client" to distinguish.
+	 * 
+	 * Note : Flow of data :
+	 * 				pr.println()		 Client.function()  	ClientUI.function()	 <-------
+	 * 		  Server    <=>      Client      <=>      ClientUI      <=>     JFrames
+	 * 	------>		ServerListener		 ClientListener			frame.function()
+	 */
+	
+	public void createNewAccount(long accountID, String password, boolean isAdmin) {
 		System.out.println("Client : Sending data to create new account.");
 		pr.println(NetBankClientProtocols.clientAddAccount);
 		pr.println(accountID);
 		pr.println(password);
+		pr.println(isAdmin);
 	}
 
 	public void cancelConnection() {
@@ -230,6 +239,10 @@ public class NetBankClient implements ServerListener{
 	public void viewAccountDetails() {
 		pr.println(NetBankClientProtocols.clientViewAccount);
 	}
+	
+	public void isAccountAdmin() {
+		pr.println(NetBankClientProtocols.clientIsAccountAdmin);
+	}
 
 
 	public interface NetBankClientProtocols {
@@ -240,9 +253,14 @@ public class NetBankClient implements ServerListener{
 		String clientAddTransaction = "clientAddTransaction";
 		String clientViewAllTransactions = "clientViewAllTransactions";
 		String clientViewAccount = "clientViewAccount";
+		String clientIsAccountAdmin = "clientIsAccountAdmin";
 	}
 
 	public interface ClientListener {
+		/**
+		 * This interface acts as a guard between the 2 thredds : Server and Client.
+		 * Add new functions and override them in ClientUI class which acts as the mediator between all Views.
+		 */
 		void clientLogInFailed();
 		void clientLogInSuccess(double limit, double consumed);
 
@@ -257,6 +275,8 @@ public class NetBankClient implements ServerListener{
 		void clientPasswordChanged();
 		
 		void clientAccountData(NetBankAccountData data);
+		void clientAccountIsAdmin(boolean isAdmin);
+		
 	}
 
 
@@ -283,6 +303,13 @@ public class NetBankClient implements ServerListener{
 			return false;
 		}
 	}
+	
+	/**
+	 * Here, these fucntions are obtained from ServerListener in the NetBackServer class. They deliver information in class format or true data
+	 * format instead of string parsing, and act as Async operations between the Server and Client.
+	 * 
+	 * Override these functions from the Server interface ServerListener
+	 */
 
 	@Override
 	public void serverSendIsTransactionStored(boolean isStored) {
@@ -308,5 +335,11 @@ public class NetBankClient implements ServerListener{
 	public void serverAccountData(NetBankAccountData data) {
 		listener.clientAccountData(data);
 	}
+
+	@Override
+	public void serverIsAccountAdmin(boolean isAdmin) {
+		listener.clientAccountIsAdmin(isAdmin);
+	}
+
 
 }

@@ -25,12 +25,15 @@ public class NetBankUtils {
 
 	private static final String TABLE_ACCOUNT =  "accountdb";
 	private static final String TABLE_TRANSACTIONS = "transactiondb";
+	
+	
 	public static final int PORT = 3306;
 
 	private static final String COL_ACCID = "accountID";
 	private static final String COL_ACCSECUREPASSWORD = "securePassword";
 	private static final String COL_ACCCREDITMAX = "creditMaxLimit";
 	private static final String COL_ACCCREDITCONSUMED = "creditConsumed";
+	private static final String COL_ACCISADMIN = "isAdmin";
 
 	private static final String COL_TRANID = "transactionID";
 	private static final String COL_TRANUSERID = "userID";
@@ -84,12 +87,13 @@ public class NetBankUtils {
 	public static boolean insertData(NetBankAccountData data) {
 		conn = connect();
 		try {
-			String sql = "insert into " + TABLE_ACCOUNT +" (" +COL_ACCID + "," + COL_ACCSECUREPASSWORD + "," + COL_ACCCREDITMAX + "," + COL_ACCCREDITCONSUMED + ")" +" values(?,?,?,?)";
+			String sql = "insert into " + TABLE_ACCOUNT +" (" +COL_ACCID + "," + COL_ACCSECUREPASSWORD + "," + COL_ACCCREDITMAX + "," + COL_ACCCREDITCONSUMED + "," + COL_ACCISADMIN+ ")" +" values(?,?,?,?,?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setLong(1, data.getAccountID());
 			stmt.setString(2, data.getSecurePassword());
 			stmt.setDouble(3, data.getCreditMaxLimit());
 			stmt.setDouble(4, data.getCreditConsumed());
+			stmt.setBoolean(5, data.isAdmin());
 
 			stmt.executeUpdate();
 			return true;
@@ -134,13 +138,14 @@ public class NetBankUtils {
 	public static boolean updateData(NetBankAccountData data) {
 		conn = connect();
 		try {
-			String sql = "update " + TABLE_ACCOUNT + " set " + COL_ACCID + " = ? , " + COL_ACCSECUREPASSWORD + " = ? , " + COL_ACCCREDITMAX + " = ? , " + COL_ACCCREDITCONSUMED + " = ? where " + COL_ACCID + " = ?";
+			String sql = "update " + TABLE_ACCOUNT + " set " + COL_ACCID + " = ? , " + COL_ACCSECUREPASSWORD + " = ? , " + COL_ACCCREDITMAX + " = ? , " + COL_ACCCREDITCONSUMED + " = ? , " + COL_ACCISADMIN + " = ? where " + COL_ACCID + " = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setLong(1, data.getAccountID());
 			stmt.setString(2, data.getSecurePassword());
 			stmt.setDouble(3, data.getCreditMaxLimit());
 			stmt.setDouble(4, data.getCreditConsumed());
-			stmt.setLong(5, data.getAccountID());
+			stmt.setBoolean(5, data.isAdmin());
+			stmt.setLong(6, data.getAccountID());
 
 			stmt.executeUpdate();
 			return true;
@@ -215,8 +220,9 @@ public class NetBankUtils {
 				String accPass = result.getString(COL_ACCSECUREPASSWORD);
 				double accMax = result.getDouble(COL_ACCCREDITMAX);
 				double accCon = result.getDouble(COL_ACCCREDITCONSUMED);
+				boolean accIsAdmin = result.getBoolean(COL_ACCISADMIN);
 
-				NetBankAccountData data = new NetBankAccountData(accountID, accPass, accMax, accCon);
+				NetBankAccountData data = new NetBankAccountData(accountID, accPass, accMax, accCon, accIsAdmin);
 				return data;
 			}
 			else
@@ -239,6 +245,7 @@ public class NetBankUtils {
 			String accPass;
 			double accMax;
 			double accCon;
+			boolean accIsAdmin;
 			NetBankAccountData data;
 
 			ArrayList<NetBankAccountData> list = new ArrayList<NetBankAccountData>();
@@ -247,7 +254,9 @@ public class NetBankUtils {
 				accPass = result.getString(COL_ACCSECUREPASSWORD);
 				accMax = result.getDouble(COL_ACCCREDITMAX);
 				accCon = result.getDouble(COL_ACCCREDITCONSUMED);
-				data = new NetBankAccountData(accID, accPass, accMax, accCon);
+				accIsAdmin = result.getBoolean(COL_ACCISADMIN);
+				
+				data = new NetBankAccountData(accID, accPass, accMax, accCon, accIsAdmin);
 
 				list.add(data);
 			}

@@ -71,12 +71,22 @@ public class LogIn extends JFrame {
 	}
 	
 	private Object options[] = {"Add Account", "Cancel"};
+	private Object options2[] = {"Yes", "No"};
 	public void logInFailed() {
 		int option = JOptionPane.showOptionDialog(this, "Account does not exist. Do you want to create a new account?", "Account Not Found", 
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 		
 		if(option == 0) {
-			ClientUI.client.createNewAccount(id, pas);
+			
+			int admin = JOptionPane.showOptionDialog(this, "Will this be an admin account?", "Account Not Found", 
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options2, options2[0]);
+			
+			if(admin == 0) {
+				ClientUI.client.createNewAccount(id, pas, true);
+			}
+			else {
+				ClientUI.client.createNewAccount(id, pas, false);
+			}
 		}
 		else {
 			ClientUI.client.cancelConnection();

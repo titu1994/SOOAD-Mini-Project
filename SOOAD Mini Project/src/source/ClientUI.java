@@ -3,6 +3,7 @@ package source;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import source.NetBankClient.ClientListener;
 
@@ -51,9 +52,16 @@ public class ClientUI extends JFrame {
 		trans = new TransactionUI();
 		trans.setVisible(true);
 	}
+	
 
 	public static class ClientEventListener implements ClientListener {
 
+		/**
+		 * 
+		 * To add functionality, create new functions in ClientListener interface in NetBankClient class
+		 * 
+		 */
+		
 		@Override
 		public void clientLogInFailed() {
 			waitDialog.setVisible(false);
@@ -104,6 +112,17 @@ public class ClientUI extends JFrame {
 		@Override
 		public void clientAccountData(NetBankAccountData data) {
 			trans.clientAccountData(data);
+		}
+
+		@Override
+		public void clientAccountIsAdmin(boolean isAdmin) {
+			//TODO: Switch to Admin Frame and handle it if true
+			if(isAdmin) {
+				//Handle Admin View
+			}
+			else {
+				//Handle if not an Admin
+			}
 		}
 		
 	}

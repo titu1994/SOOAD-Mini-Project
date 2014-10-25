@@ -132,7 +132,8 @@ public class NetBankServer {
 						System.out.println("Server : Accepting id and password for new account.");
 						long id = Long.parseLong(bb.readLine());
 						String pass = bb.readLine();
-						acc = new NetBankAccountData(id, pass);
+						boolean isAdmin = Boolean.parseBoolean(bb.readLine());
+						acc = new NetBankAccountData(id, pass, isAdmin);
 						NetBankAccountData.DataBase.insertData(acc);
 						listener.serverAccountAdded(acc);
 						System.out.println("Server : New account created.");
@@ -226,6 +227,19 @@ public class NetBankServer {
 					listener.serverAccountData(acc);
 					break;
 				}
+				case 5: {
+					listener.serverIsAccountAdmin(acc.isAdmin());
+					break;
+				}
+				/**
+				 * Add more cases here to provide more functions. 
+				 * 
+				 * BUT, note the syntax. This function is on a Infinite Loop.
+				 * It requests a String at the top, which indicates which operation it must perform. 
+				 * These Strings are the ClientProtocols in NetBankClientProtocols interface.
+				 * 
+				 * To match them, use the function below this to decode the String instruction
+				 */
 				default: {
 					System.out.println("Server : Stopping");
 					clientWaiting = false;
@@ -237,7 +251,11 @@ public class NetBankServer {
 			} while(clientWaiting);
 		}
 	}
-
+	
+	/**
+	 * This function is used to decode the String instruction passed into the first statement of the above function.
+	 * It returns int codes for the Switch case above
+	 */
 	private int decodeProtocolAction(String protocol) {
 		System.out.println("Server : Protocol - " + protocol);
 		if(protocol.equals(NetBankClientProtocols.clientAddTransaction))
@@ -248,12 +266,16 @@ public class NetBankServer {
 			return 3;
 		else if(protocol.equals(NetBankClientProtocols.clientViewAccount))
 			return 4;
+		else if(protocol.equals(NetBankClientProtocols.clientIsAccountAdmin))
+			return 5;
 
 
 		return -1;
 	}
 
-
+	/*
+	 * Dont change. Used for obtaining the User ID and Password
+	 */
 	public interface NetBankServerProtocols {
 		int PORT = 8888;
 		String localHost = "127.0.0.1";
@@ -272,12 +294,16 @@ public class NetBankServer {
 		String allClientsServed = "AllClientsServed";
 	}
 
+	/**
+	 * Add functions here in respect to obtain results from the Server and pass it in a data format.
+	 */
 	public interface ServerListener {
 		void serverSendIsTransactionStored(boolean isStored);
 		void serverSendTransactionData(NetBankTransactionData datas[]);
 		void serverAccountAdded(NetBankAccountData acc);
 		void serverPasswordChanged();
 		void serverAccountData(NetBankAccountData data);
+		void serverIsAccountAdmin(boolean isAdmin);
 	}
 
 	public static boolean isExecutorAvailable() {

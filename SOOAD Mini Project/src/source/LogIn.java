@@ -24,6 +24,7 @@ public class LogIn extends JFrame {
 
 	public LogIn() {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		pack();
 		initView();
 	}
 

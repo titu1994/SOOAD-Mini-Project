@@ -33,6 +33,7 @@ public class AdminUI extends JFrame {
 		tableList = new ArrayList<TableDataHolder>();
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		pack();
 		initView();
 	}
 

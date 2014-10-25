@@ -30,6 +30,7 @@ public class TransactionUI extends JFrame {
 
 	public TransactionUI() {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		pack();
 		transList = new ArrayList<DisplayTransaction>();
 		initView();
 	}

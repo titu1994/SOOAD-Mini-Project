@@ -2,8 +2,10 @@ package source;
 
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.table.AbstractTableModel;
@@ -45,6 +47,12 @@ public class AdminUI extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+		
+		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+		JLabel imgFrame = new JLabel(img);
+		imgFrame.setBounds(1100, 0, 300, 100);
+		imgFrame.setVisible(true);
+		getContentPane().add(imgFrame);
 
 		viewCustInfo = new JButton();
 		viewTransInfo = new JButton();

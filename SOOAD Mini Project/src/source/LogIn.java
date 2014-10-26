@@ -21,8 +21,6 @@ public class LogIn extends JFrame {
 	private JTextField user;
 	private JPasswordField pass;
 	private JButton authenticate;
-	private BufferedImage myPicture;
-	private JLabel picLabel;
 	
 	private long id;
 	private String pas;
@@ -41,32 +39,35 @@ public class LogIn extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
-
+		
+		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+		JLabel imgFrame = new JLabel(img);
+		imgFrame.setBounds(400, 0, 400, 100);
+		imgFrame.setVisible(true);
+		getContentPane().add(imgFrame);
+		
+		
 		username = new JLabel();
 		password = new JLabel();
 		user = new JTextField();
 		pass = new JPasswordField();
 		authenticate = new JButton();
 
-		myPicture = ImageIO.read(new File("Logo.png"));
-		picLabel = new JLabel(new ImageIcon(myPicture));
-
 		username.setText("User-ID");
-		username.setBounds(30, 0, 100, 100);
+		username.setBounds(300, 100, 100, 100);
 		password.setText("Password");
-		password.setBounds(30, 30, 100, 100);
+		password.setBounds(300, 130, 100, 100);
 
-		getContentPane().add(picLabel);
 		getContentPane().add(username);
 		getContentPane().add(password);
 
-		user.setBounds(150, 35, 100, 30);
-		pass.setBounds(150, 65, 100, 30);
+		user.setBounds(450, 130, 100, 30);
+		pass.setBounds(450, 160, 100, 30);
 
 		getContentPane().add(user);
 		getContentPane().add(pass);
 
-		authenticate.setBounds(75, 100, 100, 40);
+		authenticate.setBounds(400, 200, 100, 40);
 		authenticate.setText("Submit");
 
 		authenticate.addActionListener(new ActionListener() {

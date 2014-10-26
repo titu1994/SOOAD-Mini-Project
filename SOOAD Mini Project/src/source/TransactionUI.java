@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,6 +40,12 @@ public class TransactionUI extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+		
+		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+		JLabel imgFrame = new JLabel(img);
+		imgFrame.setBounds(1100, 0, 300, 100);
+		imgFrame.setVisible(true);
+		getContentPane().add(imgFrame);
 		
 		transAddButton = new JButton();
 		viewTransButton = new JButton();

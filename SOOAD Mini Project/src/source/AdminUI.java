@@ -2,6 +2,7 @@ package source;
 
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
@@ -13,7 +14,10 @@ public class AdminUI extends JFrame {
 
 	private ArrayList<TableDataHolder> tableList;
 	private TableModel tmodel;
-	private JTable table;
+	private JTable table, custTable, transTable;
+	private JButton viewCustInfo, viewTransInfo;
+	
+	
 	
 	/**
 	 * To make a Dialog for waiting, use ClientUI.waitDialog.setVisible(true);
@@ -42,22 +46,14 @@ public class AdminUI extends JFrame {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		//TODO: Add Initialization Code
-		/*
-		 * Eg : 
-		 * JButton transAddButton = new JButton(); // Create a new Object
-		 * transAddButton.setText("Add Transaction"); // Set its text
-		   transAddButton.setBounds(100, 0, 200, 50); // Set its size and position
-		   transAddButton.addActionListener(new ActionListener() { // Set up its onClickListener
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				transactionAddHandler();
-			}
-		   });
-		   getContentPane().add(transAddButton); // Add it to the pane.
-		   transAddButton.setVisible(true); // Make it visible
-		 */
+		viewCustInfo = new JButton();
+		viewTransInfo = new JButton();
+		
+		viewCustInfo.setText("View Customer Information");
+		viewTransInfo.setText("View Transaction Information");
+		
+		viewCustInfo.setBounds(350, 0, 200, 50);
+		viewTransInfo.setBounds(600, 0, 200, 50);
 	}
 
 	public void clearScreen() {

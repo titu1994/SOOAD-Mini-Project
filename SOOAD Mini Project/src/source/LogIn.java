@@ -27,6 +27,8 @@ public class LogIn extends JFrame {
 	private long id;
 	private String pas;
 	
+	private AdminUI admin;
+	
 	private static final long serialVersionUID = -6234447662078402196L;
 
 	public LogIn() throws IOException {
@@ -74,7 +76,6 @@ public class LogIn extends JFrame {
 
 				id = Long.parseLong(user.getText().toString());
 				pas = new String(pass.getPassword());
-				
 				ClientUI.startClient(id, pas);
 			}
 		});

@@ -1,5 +1,7 @@
 package source;
 
+import java.io.IOException;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +25,7 @@ public class ClientUI extends JFrame {
 	
 	public static JDialog waitDialog = new JDialog();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		listener = new ClientEventListener();
 		
 		server = new NetBankServer();

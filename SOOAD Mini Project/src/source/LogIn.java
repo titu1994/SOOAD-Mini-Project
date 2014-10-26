@@ -2,7 +2,12 @@ package source;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,19 +21,21 @@ public class LogIn extends JFrame {
 	private JTextField user;
 	private JPasswordField pass;
 	private JButton authenticate;
+	private BufferedImage myPicture;
+	private JLabel picLabel;
 	
 	private long id;
 	private String pas;
 	
 	private static final long serialVersionUID = -6234447662078402196L;
 
-	public LogIn() {
+	public LogIn() throws IOException {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		pack();
 		initView();
 	}
 
-	private void initView() {
+	private void initView() throws IOException {
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -39,11 +46,15 @@ public class LogIn extends JFrame {
 		pass = new JPasswordField();
 		authenticate = new JButton();
 
+		myPicture = ImageIO.read(new File("Logo.png"));
+		picLabel = new JLabel(new ImageIcon(myPicture));
+
 		username.setText("User-ID");
 		username.setBounds(30, 0, 100, 100);
 		password.setText("Password");
 		password.setBounds(30, 30, 100, 100);
 
+		getContentPane().add(picLabel);
 		getContentPane().add(username);
 		getContentPane().add(password);
 

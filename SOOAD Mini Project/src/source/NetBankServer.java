@@ -120,7 +120,7 @@ public class NetBankServer {
 			//If Data exists
 			if(data != null) {
 				System.out.println("Server : Sending the Account data");
-				pr.println(data.getCreditMaxLimit()+ "," + data.getCreditConsumed());
+				pr.println(data.getCreditMaxLimit()+ "," + data.getCreditConsumed() + "," + data.isAdmin());
 			}
 			else { //If Data does not exist
 				System.out.println("Server : Account data does not exist.");

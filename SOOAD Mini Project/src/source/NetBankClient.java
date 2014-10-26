@@ -111,8 +111,9 @@ public class NetBankClient implements ServerListener{
 			else {
 				creditLimit = Double.parseDouble(arr[0]);
 				creditConsumed = Double.parseDouble(arr[1]);
-
-				listener.clientLogInSuccess(creditLimit, creditConsumed);;
+				isAdmin = Boolean.parseBoolean(arr[2]);
+				NetBankAccountData d = new NetBankAccountData(accountID, password, creditLimit, creditConsumed, isAdmin);
+				listener.clientLogInSuccess(d);
 			}
 		}
 	}
@@ -262,7 +263,7 @@ public class NetBankClient implements ServerListener{
 		 * Add new functions and override them in ClientUI class which acts as the mediator between all Views.
 		 */
 		void clientLogInFailed();
-		void clientLogInSuccess(double limit, double consumed);
+		void clientLogInSuccess(NetBankAccountData data);
 
 		void clientTransactionAdded(boolean succesful);
 
@@ -323,7 +324,7 @@ public class NetBankClient implements ServerListener{
 
 	@Override
 	public void serverAccountAdded(NetBankAccountData acc) {
-		listener.clientLogInSuccess(acc.getCreditMaxLimit(), acc.getCreditConsumed());
+		listener.clientLogInSuccess(acc);
 	}
 
 	@Override

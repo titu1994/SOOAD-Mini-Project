@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import source.NetBankClient.ClientListener;
 
@@ -78,9 +77,17 @@ public class ClientUI extends JFrame {
 		}
 
 		@Override
-		public void clientLogInSuccess(double limit, double consumed) {
-			waitDialog.setVisible(false);
-			TransactionScreen();
+		public void clientLogInSuccess(NetBankAccountData data) {
+			//TODO: Switch to Admin Frame and handle it if true
+			if(data.isAdmin()) {
+				waitDialog.setVisible(false);
+				AdminScreen();
+			}
+			else {
+				waitDialog.setVisible(false);
+				TransactionScreen();
+			}
+			
 		}
 
 		@Override
@@ -125,11 +132,7 @@ public class ClientUI extends JFrame {
 
 		@Override
 		public void clientAccountIsAdmin(boolean isAdmin) {
-			//TODO: Switch to Admin Frame and handle it if true
-			if(isAdmin) {
-				admin = new AdminUI();
-				admin .setVisible(true);
-			}
+			
 		}
 		
 	}

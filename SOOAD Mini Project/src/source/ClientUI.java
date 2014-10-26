@@ -128,6 +128,7 @@ public class ClientUI extends JFrame {
 			//TODO: Switch to Admin Frame and handle it if true
 			if(isAdmin) {
 				
+				admin = new AdminUI();
 				admin .setVisible(true);
 			}
 		}

@@ -41,7 +41,7 @@ public class TransactionUI extends JFrame {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
-		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+		ImageIcon img = new ImageIcon("src/SwiftCardMini.png");
 		JLabel imgFrame = new JLabel(img);
 		imgFrame.setBounds(1100, 0, 300, 100);
 		imgFrame.setVisible(true);

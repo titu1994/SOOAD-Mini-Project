@@ -22,6 +22,7 @@ public class NetBankServer {
 	private String protocol;
 
 	private long id;
+	private String password;
 
 	private static ServerListener listener;
 	private static PrintWriter pr;
@@ -41,7 +42,7 @@ public class NetBankServer {
 		System.out.println("Server : Started");
 
 	}
-	
+
 	public static void setServerListener(ServerListener listener) {
 		NetBankServer.listener = listener;
 	}
@@ -130,10 +131,10 @@ public class NetBankServer {
 				try {
 					if((protocol = bb.readLine()).equals(NetBankClientProtocols.clientAddAccount)) {
 						System.out.println("Server : Accepting id and password for new account.");
-						long id = Long.parseLong(bb.readLine());
-						String pass = bb.readLine();
+						id = Long.parseLong(bb.readLine());
+						password = bb.readLine();
 						boolean isAdmin = Boolean.parseBoolean(bb.readLine());
-						acc = new NetBankAccountData(id, pass, isAdmin);
+						acc = new NetBankAccountData(id, password, isAdmin);
 						NetBankAccountData.DataBase.insertData(acc);
 						listener.serverAccountAdded(acc);
 						System.out.println("Server : New account created.");
@@ -153,8 +154,8 @@ public class NetBankServer {
 		synchronized (client) {
 			String arr[] = input.split("[\\r\n]+");
 
-			long id = Long.parseLong(arr[0]);
-			String password = arr[1];
+			 id = Long.parseLong(arr[0]);
+			 password = arr[1];
 			//System.out.println("ID : " + id + " Pass : " + password);
 			String generatedPassword = NetBankUtils.getSecurePassword(password);
 			NetBankAccountData data = null; 
@@ -212,7 +213,7 @@ public class NetBankServer {
 
 							acc.setSecurePassword(NetBankUtils.getSecurePassword(newPass));
 							DataBase.updateData(acc);
-							
+							password = newPass;
 						}
 						else {
 							pr.println(NetBankServerProtocols.serverError);
@@ -224,11 +225,41 @@ public class NetBankServer {
 					break;
 				}
 				case 4: {
+					acc = NetBankAccountData.DataBase.getDataStore(id);
 					listener.serverAccountData(acc);
 					break;
 				}
 				case 5: {
 					listener.serverIsAccountAdmin(acc.isAdmin());
+					break;
+				}
+				case 6: {
+					long accID = Long.parseLong(bb.readLine());
+					long credit = Long.parseLong(bb.readLine());
+					long max = Long.parseLong(bb.readLine());
+					NetBankAccountData d = NetBankAccountData.DataBase.getDataStore(accID);
+					
+					if(d.getAccountID() == accID) {
+						if(credit != -1)
+							d.setCreditConsumed(credit);
+						else {
+							NetBankTransactionData trans[] = NetBankTransactionData.Database.getDataStore(accID);
+							double val = 0;
+							for(NetBankTransactionData t : trans) {
+								val += t.transactionAmount;
+							}
+							d.setCreditConsumed(val);
+						}
+						if(max != -1)
+							d.setCreditMaxLimit(max);
+						System.out.println("Server : Save account");
+						listener.serverAccountUpdatedSuccesfully(NetBankAccountData.DataBase.updateData(d));
+						System.out.println(d);
+					}
+					else {
+						System.out.println("Server : Failed to check Acc ID");
+						listener.serverAccountUpdatedSuccesfully(false);
+					}
 					break;
 				}
 				/**
@@ -251,7 +282,7 @@ public class NetBankServer {
 			} while(clientWaiting);
 		}
 	}
-	
+
 	/**
 	 * This function is used to decode the String instruction passed into the first statement of the above function.
 	 * It returns int codes for the Switch case above
@@ -268,6 +299,8 @@ public class NetBankServer {
 			return 4;
 		else if(protocol.equals(NetBankClientProtocols.clientIsAccountAdmin))
 			return 5;
+		else if(protocol.equals(NetBankClientProtocols.clientUpdateAccount))
+			return 6;
 
 
 		return -1;
@@ -304,6 +337,7 @@ public class NetBankServer {
 		void serverPasswordChanged();
 		void serverAccountData(NetBankAccountData data);
 		void serverIsAccountAdmin(boolean isAdmin);
+		void serverAccountUpdatedSuccesfully(boolean isSuccesful);
 	}
 
 	public static boolean isExecutorAvailable() {

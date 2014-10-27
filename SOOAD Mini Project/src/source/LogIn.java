@@ -40,7 +40,7 @@ public class LogIn extends JFrame {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
-		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+		ImageIcon img = new ImageIcon("src/SwiftCardMini.png");
 		JLabel imgFrame = new JLabel(img);
 		imgFrame.setBounds(400, 0, 400, 100);
 		imgFrame.setVisible(true);

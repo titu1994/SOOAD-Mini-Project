@@ -244,6 +244,13 @@ public class NetBankClient implements ServerListener{
 	public void isAccountAdmin() {
 		pr.println(NetBankClientProtocols.clientIsAccountAdmin);
 	}
+	
+	public void updateAccount(long id, long credit, long max) {
+		pr.println(NetBankClientProtocols.clientUpdateAccount);
+		pr.println(id);
+		pr.println(credit);
+		pr.println(max);
+	}
 
 
 	public interface NetBankClientProtocols {
@@ -255,6 +262,7 @@ public class NetBankClient implements ServerListener{
 		String clientViewAllTransactions = "clientViewAllTransactions";
 		String clientViewAccount = "clientViewAccount";
 		String clientIsAccountAdmin = "clientIsAccountAdmin";
+		String clientUpdateAccount = "clientUpdateAccount";
 	}
 
 	public interface ClientListener {
@@ -277,7 +285,7 @@ public class NetBankClient implements ServerListener{
 		
 		void clientAccountData(NetBankAccountData data);
 		void clientAccountIsAdmin(boolean isAdmin);
-		
+		void clientAccountUpdatedSuccesfully(boolean isSuccesful);
 	}
 
 
@@ -342,5 +350,9 @@ public class NetBankClient implements ServerListener{
 		listener.clientAccountIsAdmin(isAdmin);
 	}
 
+	@Override
+	public void serverAccountUpdatedSuccesfully(boolean isSuccesful) {
+		listener.clientAccountUpdatedSuccesfully(isSuccesful);
+	}
 
 }

@@ -55,7 +55,7 @@ public class AdminUI extends JFrame {
 		accountCreditText = new JTextField();
 		accountCreditMaxText = new JTextField();
 		
-		ImageIcon img = new ImageIcon("src/SwiftCardMini.png");
+		ImageIcon img = new ImageIcon("src/images/SwiftCardMini.png");
 		JLabel imgFrame = new JLabel(img);
 		imgFrame.setBounds(1100, 0, 300, 100);
 		imgFrame.setVisible(true);

@@ -1,25 +1,25 @@
 package source;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.AbstractTableModel;
 
 public class AdminUI extends JFrame {
 
 	private static final long serialVersionUID = 819277906705746380L;
-	private JButton viewCustInfo, storeButton;
-	private JLabel accountIDLabel, accountCreditLabel, accountCreditMaxLabel;
-	private JTextField accountIDText, accountCreditText, accountCreditMaxText;
+
+	private ArrayList<TableDataHolder> tableList;
+	private TableModel tmodel;
+	private JTable table, custTable, transTable;
+	private JButton viewCustInfo, viewTransInfo;
+	
+	
 	
 	/**
 	 * To make a Dialog for waiting, use ClientUI.waitDialog.setVisible(true);
@@ -35,6 +35,8 @@ public class AdminUI extends JFrame {
 
 	public AdminUI() {
 		//TODO: Initialise Variables
+
+		tableList = new ArrayList<TableDataHolder>();
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		pack();
@@ -61,103 +63,78 @@ public class AdminUI extends JFrame {
 		imgFrame.setVisible(true);
 		getContentPane().add(imgFrame);
 
-		viewCustInfo.setText("Update Account");
+		viewCustInfo = new JButton();
+		viewTransInfo = new JButton();
+		
+		viewCustInfo.setText("View Customer Information");
+		viewTransInfo.setText("View Transaction Information");
+		
 		viewCustInfo.setBounds(350, 0, 200, 50);
-		viewCustInfo.setVisible(true);
-		viewCustInfo.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showChoices();
-			}
-		});
-		getContentPane().add(viewCustInfo);
-		
-		storeButton.setText("Submit");
-		storeButton.setBounds(300, 400, 200, 50);
-		storeButton.setVisible(true);
-		storeButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				storeAction();
-			}
-		});
-		getContentPane().add(storeButton);
-		
-		accountIDLabel.setText("Account ID");
-		accountIDLabel.setBounds(200, 100, 100, 50);
-		getContentPane().add(accountIDLabel);
-		
-		accountCreditLabel.setText("Account Credit");
-		accountCreditLabel.setBounds(200,200, 100, 50);
-		getContentPane().add(accountCreditLabel);
-		
-		accountCreditMaxLabel.setText("Account Max");
-		accountCreditMaxLabel.setBounds(200, 300, 100, 50);
-		getContentPane().add(accountCreditMaxLabel);
-		
-		accountIDText.setBounds(350, 100, 100, 50);
-		getContentPane().add(accountIDText);
-		
-		accountCreditText.setBounds(350,200, 100, 50);
-		getContentPane().add(accountCreditText);
-		
-		accountCreditMaxText.setBounds(350, 300, 100, 50);
-		getContentPane().add(accountCreditMaxText);
-		
-	}
-
-	protected void storeAction() {
-		String accIDString = accountIDText.getText();
-		String cred = accountCreditText.getText();
-		String m = accountCreditMaxText.getText();
-		long accID, credit, max;
-		
-		if(accIDString == null || accIDString.length() == 0) {
-			JOptionPane.showMessageDialog(this, "ID must be filled");
-			return;
-		}
-		else {
-			accID = Long.parseLong(accIDString);
-		}
-		
-		if(cred == null || cred.length() == 0) {
-			credit = -1;
-		}
-		else {
-			credit = Long.parseLong(cred);
-		}
-		
-		if(m == null || m.length() == 0) {
-			max = -1;
-		}
-		else {
-			max = Long.parseLong(m);
-		}
-		
-		ClientUI.client.updateAccount(accID, credit, max);
-	}
-
-	protected void showChoices() {
-		accountIDLabel.setVisible(true);
-		accountCreditLabel.setVisible(true);
-		accountCreditMaxLabel.setVisible(true);
-		accountIDText.setVisible(true);
-		accountCreditText.setVisible(true);
-		accountCreditMaxText.setVisible(true);
+		viewTransInfo.setBounds(600, 0, 200, 50);
 	}
 
 	public void clearScreen() {
 		//TODO: Add Clearing code to make all objects invisible
 	}
-	
-	public void clientAccountUpdatedSuccesfully(boolean isSuccesful) {
-		if(isSuccesful) {
-			JOptionPane.showMessageDialog(this, "Account has been updated!");
+
+	private void tableSetup() {		
+
+		if(table == null) {
+			TableDataHolder d = new TableDataHolder();
+			//TODO: Add the headers to the Table here in String format
+			tableList.add(d);
+
+			tmodel = new TableModel();
+			table = new JTable(tmodel);
+			//TODO: Update the position with some other values
+			table.setBounds(300, 100, 800, 800);
+			getContentPane().add(table);
 		}
 		else {
-			JOptionPane.showMessageDialog(this, "Account failed to get updated");
+			tmodel.fireTableDataChanged();
+		}
+		table.setVisible(true);
+		ClientUI.waitDialog.setVisible(false);
+	}
+
+	private class TableDataHolder {
+		//TODO: Add Table data items here
+	}
+
+	private class TableModel extends AbstractTableModel {
+
+		private static final long serialVersionUID = -1962279468479145799L;
+
+		/**
+		 * TODO: Change the number returned here corresponding to the number of data variables in TableDataHolder
+		 */
+		@Override
+		public int getColumnCount() {
+			return 0;
+		}
+
+		@Override
+		public int getRowCount() {
+			return tableList.size();
+		}
+
+		@Override
+		public Object getValueAt(int row, int col) {
+			/*
+			 * TODO: Change this code to retrieve specific items
+			 * 
+			 * if(col == 0) 
+				return tableList.get(row).transactionID;
+			else if(col == 1) 
+				return tableList.get(row).userID; 
+			 */
+
+			return -1; 
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return false;
 		}
 	}
 

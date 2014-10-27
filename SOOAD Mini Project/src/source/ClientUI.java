@@ -28,6 +28,7 @@ public class ClientUI extends JFrame {
 		listener = new ClientEventListener();
 
 		server = new NetBankServer();
+		server.startCommunication();
 		JLabel label = new JLabel("Please wait...");
 		waitDialog.setLocationRelativeTo(null);
 		waitDialog.setTitle("Please Wait...");
@@ -135,13 +136,9 @@ public class ClientUI extends JFrame {
 
 			//TODO: Switch to Admin Frame and handle it if true
 			if(isAdmin) {
+
 				admin .setVisible(true);
 			}
-		}
-
-		@Override
-		public void clientAccountUpdatedSuccesfully(boolean isSuccesful) {
-			admin.clientAccountUpdatedSuccesfully(isSuccesful);
 		}
 
 	}

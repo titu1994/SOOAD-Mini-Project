@@ -45,11 +45,15 @@ public class TransactionUI extends JFrame {
 		ImageIcon img = new ImageIcon("src/images/SwiftCardMini.png");
 =======
 		
+<<<<<<< HEAD
 		ImageIcon img = new ImageIcon("SwiftCardMini.png");
 <<<<<<< HEAD
 >>>>>>> parent of e0e40cd... Final
 =======
 >>>>>>> parent of e0e40cd... Final
+=======
+		ImageIcon img = new ImageIcon("src/SwiftCardMini.png");
+>>>>>>> parent of 27197a5... Fn
 		JLabel imgFrame = new JLabel(img);
 		imgFrame.setBounds(1100, 0, 300, 100);
 		imgFrame.setVisible(true);

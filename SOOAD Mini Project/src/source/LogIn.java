@@ -45,6 +45,9 @@ public class LogIn extends JFrame {
 =======
 		
 		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+<<<<<<< HEAD
+>>>>>>> parent of e0e40cd... Final
+=======
 >>>>>>> parent of e0e40cd... Final
 		JLabel imgFrame = new JLabel(img);
 		imgFrame.setBounds(400, 0, 400, 100);

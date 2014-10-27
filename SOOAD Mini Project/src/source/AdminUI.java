@@ -47,6 +47,7 @@ public class AdminUI extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+<<<<<<< HEAD
 		
 		viewCustInfo = new JButton();
 		storeButton = new JButton();
@@ -58,6 +59,10 @@ public class AdminUI extends JFrame {
 		accountCreditMaxText = new JTextField();
 		
 		ImageIcon img = new ImageIcon("src/images/SwiftCardMini.png");
+=======
+		
+		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+>>>>>>> parent of e0e40cd... Final
 		JLabel imgFrame = new JLabel(img);
 		imgFrame.setBounds(1100, 0, 300, 100);
 		imgFrame.setVisible(true);

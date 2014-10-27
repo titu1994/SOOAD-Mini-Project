@@ -39,8 +39,13 @@ public class LogIn extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+<<<<<<< HEAD
 		
 		ImageIcon img = new ImageIcon("src/images/SwiftCardMini.png");
+=======
+		
+		ImageIcon img = new ImageIcon("SwiftCardMini.png");
+>>>>>>> parent of e0e40cd... Final
 		JLabel imgFrame = new JLabel(img);
 		imgFrame.setBounds(400, 0, 400, 100);
 		imgFrame.setVisible(true);
